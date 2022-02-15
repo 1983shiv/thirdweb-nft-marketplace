@@ -55,14 +55,10 @@ const Header = () => {
           <div className={style.headerItem}>Create</div>
         </Link>
         <div className={style.headerIcon}>
-          <Link href="/" passHref>
-            <CgProfile />
-          </Link>
+          <CgProfile />
         </div>
         <div className={style.headerIcon}>
-          <Link href="/" passHref>
-            <MdOutlineAccountBalanceWallet />
-          </Link>
+          <MdOutlineAccountBalanceWallet />
         </div>
       </div>
     </div>

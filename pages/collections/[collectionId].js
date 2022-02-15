@@ -59,6 +59,7 @@ const Collection = () => {
     if (!nftModule) return;
 
     const nfts = await nftModule.getAll();
+    // console.log("nfts", nfts);
     setNfts(nfts);
   }, [nftModule]);
 
@@ -73,10 +74,9 @@ const Collection = () => {
   useEffect(() => {
     if (!marketPlaceModule) return;
 
-    async () => {
-      const listingData = await marketPlaceModule.getAll();
-      setListing(listingData);
-    };
+    (async () => {
+      setListing(await marketPlaceModule.getAllListings());
+    })();
   }, [marketPlaceModule]);
 
   const fetchCollectionData = async (sanityClient = client) => {
@@ -87,7 +87,8 @@ const Collection = () => {
       createdBy,
       contractAddress,
       "creator": createdBy->userName,
-      title, floorPrice,
+      title, 
+      floorPrice,
       "allOwners": owners[]->,
       description
     }`;
@@ -101,7 +102,7 @@ const Collection = () => {
     fetchCollectionData();
   }, [collectionId]);
 
-  console.log("collections", nfts);
+  // console.log("collections", nfts);
 
   return (
     <div className="overflow-hidden">
@@ -203,6 +204,7 @@ const Collection = () => {
       </div>
       <div className="flex flex-wrap ">
         {nfts.map((nftItem, id) => (
+          // console.log("nftItem", nftItem),
           <NFTCard
             key={id}
             nftItem={nftItem}
@@ -216,33 +218,3 @@ const Collection = () => {
 };
 
 export default Collection;
-
-// query for sanity
-
-// *[_type == "marketItems" && contractAddress == "0xcB08316B15fD524886078ED8F95BD9967172CB95"]{
-//   "imageUrl": profileImage.asset->url,
-//   "bannerImageUrl": bannerImage.asset->url,
-//   volumeTraded,
-//   createdBy,
-//   contractAddress,
-//   title,
-//   floorPrice,
-//   "creator": createdBy->setTheUsername,
-//   description
-// }
-
-// Results
-// {9 items
-//   "bannerImageUrl":"https://cdn.sanity.io/images/uetkro65/production/f1289cf8c5bab250f93e92dc9f48142c4858e2b3-800x637.jpg"
-//   "contractAddress":"0xcB08316B15fD524886078ED8F95BD9967172CB95"
-//   "createdBy":{2 items
-//   "_ref":"0x7289F56110c9DaFccbbd2297d8FE6DA54CE6d85f"
-//   "_type":"reference"
-//   }
-//   "creator":NULL
-//   "description":"We have more than 10,000 collections for Ninja NFTs"
-//   "floorPrice":84
-//   "imageUrl":"https://cdn.sanity.io/images/uetkro65/production/6a51719d49aa547e1d9ea9b1e0373dbe0ca10d52-293x293.png"
-//   "title":"Bored Ninja Apt Club"
-//   "volumeTraded":234
-//   }

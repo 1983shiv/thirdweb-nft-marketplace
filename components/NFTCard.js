@@ -23,8 +23,11 @@ const NFTCard = ({ nftItem, title, listings }) => {
   const [isListed, setIsListed] = useState(false);
   const [price, setPrice] = useState(0);
 
-  useEffect(() => {
-    const listing = listings.find((listing) => listing.asset.id === nftItem.id);
+  useEffect(async () => {
+    const listing = await listings.find(
+      (listing) => listing.asset.id === nftItem.id
+    );
+
     if (Boolean(listing)) {
       setIsListed(true);
       setPrice(listing.buyoutCurrencyValuePerToken.displayValue);
